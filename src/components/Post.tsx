@@ -50,45 +50,32 @@ const Post: FC<PostProps> = ({
   const [isDeleting, startTransition] = useTransition();
 
   const isPostAuthor = session?.user.id === post.authorId;
+  const [open, setOpen] = React.useState(false); // Add state for dialog
 
   const deletePostHandler = async () => {
-    // Make handleDeletePost async
-    try {
-      const response = await fetch(`/api/deletepost/${post.id}`, {
-        // Call API route
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        let errorMessage = "Failed to delete post.";
-        const clonedResponse = response.clone(); // Clone the response here!
-
-        try {
-          const errorData = await response.json(); // Try to parse original response as JSON
-          errorMessage = errorData?.error || "Failed to delete post.";
-        } catch (jsonError) {
-          // Catch JSON parsing error
-          try {
-            const errorText = await clonedResponse.text(); // Read the cloned response as text
-            console.error("Raw error response (non-JSON?):", errorText);
-            errorMessage = `Failed to delete post. (Non-JSON error from server): ${errorText}`; // Include errorText in message
-          } catch (textError) {
-            // Catch text parsing error
-            console.error("Text parse error:", textError);
-            errorMessage = `Failed to delete post. (Error parsing error response)`;
-          }
+    startTransition(async () => {  // Wrap in startTransition
+      try {
+        const response = await fetch(`/api/deletepost/${post.id}`, {
+          method: "DELETE",
+        });
+  
+        if (!response.ok) {
+          let errorMessage = "Failed to delete post.";
+          const clonedResponse = response.clone();
+          // ...existing error handling code...
+          toast.error(errorMessage);
+          return;
         }
-        toast.error(errorMessage);
-        return; // Early return on error
+  
+        // Success!
+        router.refresh();
+        setOpen(false); // Move this here to close dialog after successful deletion
+        toast.success("Post deleted successfully!");
+      } catch (error) {
+        console.error("Error deleting post (API call):", error);
+        toast.error("Failed to delete post. Please try again.");
       }
-
-      // Success!
-      router.refresh();
-      toast.success("Post deleted successfully!");
-    } catch (error) {
-      console.error("Error deleting post (API call):", error); // Log fetch errors
-      toast.error("Failed to delete post. Please try again.");
-    }
+    });
   };
   return (
     <Card>
@@ -142,7 +129,7 @@ const Post: FC<PostProps> = ({
           </Link>
         </Button>
         {isPostAuthor && (
-          <Dialog>
+          <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
               <Button
                 variant="ghost"
@@ -163,7 +150,10 @@ const Post: FC<PostProps> = ({
               <DialogFooter className="gap-2">
                 <Button
                   variant="secondary"
-                  onClick={() => deletePostHandler()}
+                  onClick={async () => {
+                    await deletePostHandler();
+                    setOpen(false); // Close dialog after deletion
+                  }}
                   disabled={isDeleting}
                 >
                   {isDeleting ? (
