@@ -88,7 +88,7 @@ const SearchBar: FC<SearchBarProps> = ({}) => {
       <Button
         variant={"outline"}
         className={cn(
-          " relative h-full w-full justify-start rounded-full lg:rounded-[0.5rem] text-sm font-normal text-muted-foreground shadow-none sm:pr-12 md:w-40 lg:w-96 xl:w-64"
+          " relative h-full justify-start rounded-full lg:rounded-[0.5rem] text-sm font-normal text-muted-foreground shadow-none sm:pr-12 md:w-40 lg:w-96 xl:w-64"
         )}
         onClick={() => setOpen(true)}
       >

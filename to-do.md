@@ -1,2 +1,1 @@
-- [ ] close dialog after deleting post
-- [ ] clean up user dropdown
+- [x] close dialog after deleting post

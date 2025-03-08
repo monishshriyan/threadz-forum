@@ -18,6 +18,9 @@ import {
   DialogFooter,
 } from "@/components/ui/Dialog";
 import UserAuthForm from "@/components/UserAuthForm";
+import { UserNameForm } from "@/components/UserNameForm";
+import { UserRoundCog } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 //command dialog
 
@@ -26,7 +29,7 @@ const Navbar = async () => {
 
   return (
     <div className="fixed top-0 inset-x-0 py-2 container flex items-center justify-center z-50 ">
-      <div className="border bg-muted/70 backdrop-blur-md h-16 flex items-center justify-between gap-4 md:rounded-xl rounded-full md:px-5 px-3 mt-2 sm:mt-4 w-full">
+      <div className="border bg-muted/70 backdrop-blur-md h-16 flex items-center justify-between gap-3 md:rounded-xl rounded-full md:px-5 px-3 mt-2 sm:mt-4 w-full">
         {/* logo */}
         <div className="flex gap-2 items-center">
           <Link
@@ -49,12 +52,39 @@ const Navbar = async () => {
         <div className="flex flex-row gap-4 justify-end items-center w-full">
           {/* search bar */}
           <SearchBar />
-
-          {/* actions */}
+          <div className="hidden lg:flex">
+          <ThemeToggle />
+          </div>
           {session?.user ? (
-            <UserAccountNav user={session.user} />
-          ) : (
-            <>
+        <>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full"
+              >
+                <UserRoundCog className="h-5 w-5 text-muted-foreground" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="w-[80%] max-w-md rounded-xl">
+              <DialogHeader>
+                <DialogTitle>Settings</DialogTitle>
+                <DialogDescription>
+                  Change username
+                </DialogDescription>
+              </DialogHeader>
+              <UserNameForm
+                user={{
+                  id: session.user.id,
+                  username: session.user.username || "",
+                }}
+              />
+            </DialogContent>
+          </Dialog>
+          <UserAccountNav user={session.user} />
+        </>
+      ) : (
               <Dialog>
                 <DialogTrigger className="" asChild>
                   <Button
@@ -87,7 +117,6 @@ const Navbar = async () => {
                 </DialogFooter> */}
                 </DialogContent>
               </Dialog>
-            </>
           )}
         </div>
       </div>

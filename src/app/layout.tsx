@@ -27,7 +27,7 @@ export default function RootLayout({
       className={cn("antialiased", inter.className)}
     >
       <body className="h-[100dvh] antialiased">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <Toaster richColors />
           <Providers>
             {/* @ts-expect-error Server Component */}
