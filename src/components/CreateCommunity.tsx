@@ -46,11 +46,11 @@ const CreateCommunity = () => {
     onError: (err) => {
       if (err instanceof AxiosError) {
         if (err.response?.status === 409) {
-          return toast.warning("Subreddit already exists.");
+          return toast.warning("Community already exists.");
         }
 
         if (err.response?.status === 422) {
-          return toast.error("Invalid Subreddit name ");
+          return toast.error("Invalid Community name ");
         }
 
         if (err.response?.status === 401) {
@@ -103,7 +103,7 @@ const CreateCommunity = () => {
             {isLoading ? (
               <>
                 {" "}
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="h-4 w-4 animate-spin" />
                 Creating...{" "}
               </>
             ) : (

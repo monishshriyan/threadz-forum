@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/Dialog";
 import UserAuthForm from "@/components/UserAuthForm";
 import { UserNameForm } from "@/components/UserNameForm";
-import { UserRoundCog } from "lucide-react";
+import { Settings, UserRoundCog } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 //command dialog
@@ -64,7 +64,7 @@ const Navbar = async () => {
                 size="icon"
                 className="rounded-full"
               >
-                <UserRoundCog className="h-5 w-5 text-muted-foreground" />
+                <Settings className="h-5 w-5 text-muted-foreground" />
               </Button>
             </DialogTrigger>
             <DialogContent className="w-[80%] max-w-md rounded-xl">
